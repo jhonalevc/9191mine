@@ -1,0 +1,129 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@latest/styles/vis-network.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@latest/dist/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Start", "label": "Start", "level": 0, "shape": "box"}, {"id": "NEW", "label": "NEW", "level": 1, "shape": "box"}, {"id": "FIN", "label": "FIN", "level": 2, "shape": "box"}, {"id": "CHANGE DIAGN", "label": "CHANGE DIAGN", "level": 2, "shape": "box"}, {"id": "JOIN-PAT", "label": "JOIN-PAT", "level": 5, "shape": "box"}, {"id": "RELEASE", "label": "RELEASE", "level": 6, "shape": "box"}, {"id": "REOPEN", "label": "REOPEN", "level": 6, "shape": "box"}, {"id": "BILLED", "label": "BILLED", "level": 6, "shape": "box"}, {"id": "REJECT", "label": "REJECT", "level": 6, "shape": "box"}, {"id": "CODE OK", "label": "CODE OK", "level": 8, "shape": "box"}, {"id": "CODE NOK", "label": "CODE NOK", "level": 8, "shape": "box"}, {"id": "STORNO", "label": "STORNO", "level": 14, "shape": "box"}, {"id": "DELETE", "label": "DELETE", "level": 3, "shape": "box"}, {"id": "SET STATUS", "label": "SET STATUS", "level": 7, "shape": "box"}, {"id": "MANUAL", "label": "MANUAL", "level": 12, "shape": "box"}, {"id": "EMPTY", "label": "EMPTY", "level": 13, "shape": "box"}, {"id": "End", "label": "End", "level": 15, "shape": "box"}]);
+        edges = new vis.DataSet([{"arrows": "to", "from": "Start", "label": "98663", "to": "NEW"}, {"arrows": "to", "from": "NEW", "label": "29785", "to": "FIN"}, {"arrows": "to", "from": "NEW", "label": "4833", "to": "DELETE"}, {"arrows": "to", "from": "NEW", "label": "41611", "to": "CHANGE DIAGN"}, {"arrows": "to", "from": "NEW", "label": "28", "to": "JOIN-PAT"}, {"arrows": "to", "from": "FIN", "label": "68200", "to": "RELEASE"}, {"arrows": "to", "from": "FIN", "label": "28", "to": "SET STATUS"}, {"arrows": "to", "from": "CHANGE DIAGN", "label": "40065", "to": "FIN"}, {"arrows": "to", "from": "CHANGE DIAGN", "label": "2756", "to": "CHANGE DIAGN"}, {"arrows": "to", "from": "CHANGE DIAGN", "label": "1632", "to": "DELETE"}, {"arrows": "to", "from": "CHANGE DIAGN", "label": "17", "to": "JOIN-PAT"}, {"arrows": "to", "from": "JOIN-PAT", "label": "159", "to": "JOIN-PAT"}, {"arrows": "to", "from": "JOIN-PAT", "label": "17", "to": "FIN"}, {"arrows": "to", "from": "RELEASE", "label": "64750", "to": "CODE OK"}, {"arrows": "to", "from": "RELEASE", "label": "2759", "to": "CODE NOK"}, {"arrows": "to", "from": "RELEASE", "label": "73", "to": "SET STATUS"}, {"arrows": "to", "from": "RELEASE", "label": "237", "to": "REOPEN"}, {"arrows": "to", "from": "CODE OK", "label": "62760", "to": "BILLED"}, {"arrows": "to", "from": "CODE OK", "label": "1987", "to": "REOPEN"}, {"arrows": "to", "from": "CODE OK", "label": "27", "to": "MANUAL"}, {"arrows": "to", "from": "CODE NOK", "label": "315", "to": "SET STATUS"}, {"arrows": "to", "from": "CODE NOK", "label": "208", "to": "CODE NOK"}, {"arrows": "to", "from": "CODE NOK", "label": "349", "to": "CODE OK"}, {"arrows": "to", "from": "CODE NOK", "label": "391", "to": "REOPEN"}, {"arrows": "to", "from": "CODE NOK", "label": "1189", "to": "BILLED"}, {"arrows": "to", "from": "CODE NOK", "label": "422", "to": "EMPTY"}, {"arrows": "to", "from": "REOPEN", "label": "128", "to": "CHANGE DIAGN"}, {"arrows": "to", "from": "REOPEN", "label": "2354", "to": "FIN"}, {"arrows": "to", "from": "REOPEN", "label": "988", "to": "DELETE"}, {"arrows": "to", "from": "BILLED", "label": "8", "to": "JOIN-PAT"}, {"arrows": "to", "from": "BILLED", "label": "2230", "to": "STORNO"}, {"arrows": "to", "from": "STORNO", "label": "1466", "to": "REJECT"}, {"arrows": "to", "from": "STORNO", "label": "754", "to": "BILLED"}, {"arrows": "to", "from": "REJECT", "label": "626", "to": "BILLED"}, {"arrows": "to", "from": "REJECT", "label": "640", "to": "REOPEN"}, {"arrows": "to", "from": "REJECT", "label": "163", "to": "RELEASE"}, {"arrows": "to", "from": "REJECT", "label": "37", "to": "SET STATUS"}, {"arrows": "to", "from": "BILLED", "label": "62719", "to": "End"}, {"arrows": "to", "from": "DELETE", "label": "7971", "to": "End"}, {"arrows": "to", "from": "NEW", "label": "22396", "to": "End"}, {"arrows": "to", "from": "FIN", "label": "3596", "to": "End"}, {"arrows": "to", "from": "SET STATUS", "label": "490", "to": "End"}, {"arrows": "to", "from": "CODE OK", "label": "869", "to": "End"}, {"arrows": "to", "from": "JOIN-PAT", "label": "36", "to": "End"}, {"arrows": "to", "from": "RELEASE", "label": "104", "to": "End"}, {"arrows": "to", "from": "CODE NOK", "label": "10", "to": "End"}, {"arrows": "to", "from": "MANUAL", "label": "21", "to": "End"}, {"arrows": "to", "from": "EMPTY", "label": "433", "to": "End"}, {"arrows": "to", "from": "CHANGE DIAGN", "label": "18", "to": "End"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "layout": {
+        "hierarchical": {
+            "blockShifting": true,
+            "edgeMinimization": true,
+            "enabled": true,
+            "levelSeparation": 150,
+            "parentCentralization": true,
+            "sortMethod": "hubsize",
+            "treeSpacing": 200
+        },
+        "improvedLayout": true,
+        "randomSeed": 0
+    },
+    "physics": {
+        "enabled": true,
+        "hierarchicalRepulsion": {
+            "centralGravity": 0.0,
+            "damping": 0.09,
+            "nodeDistance": 150,
+            "springConstant": 0,
+            "springLength": 100
+        },
+        "solver": "hierarchicalRepulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

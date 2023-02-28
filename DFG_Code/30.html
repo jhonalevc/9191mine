@@ -1,0 +1,117 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@latest/styles/vis-network.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@latest/dist/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "green", "id": "Start", "label": "Start", "level": 0, "shape": "diamond", "size": 120}, {"color": "orange", "id": "NEW", "label": "NEW", "level": 1, "shape": "box"}, {"color": "orange", "id": "FIN", "label": "FIN", "level": 2, "shape": "box"}, {"color": "orange", "id": "RELEASE", "label": "RELEASE", "level": 2, "shape": "box"}, {"color": "orange", "id": "REOPEN", "label": "REOPEN", "level": 2, "shape": "box"}, {"color": "orange", "id": "SET STATUS", "label": "SET STATUS", "level": 2, "shape": "box"}, {"color": "orange", "id": "CODE OK", "label": "CODE OK", "level": 4, "shape": "box"}, {"color": "orange", "id": "MANUAL", "label": "MANUAL", "level": 4, "shape": "box"}, {"color": "orange", "id": "CHANGE DIAGN", "label": "CHANGE DIAGN", "level": 8, "shape": "box"}, {"color": "orange", "id": "BILLED", "label": "BILLED", "level": 5, "shape": "box"}, {"color": "orange", "id": "CODE ERROR", "label": "CODE ERROR", "level": 5, "shape": "box"}, {"color": "orange", "id": "STORNO", "label": "STORNO", "level": 9, "shape": "box"}, {"color": "orange", "id": "REJECT", "label": "REJECT", "level": 10, "shape": "box"}, {"color": "orange", "id": "CODE NOK", "label": "CODE NOK", "level": 11, "shape": "box"}, {"color": "orange", "id": "CHANGE END", "label": "CHANGE END", "level": 13, "shape": "box"}, {"color": "orange", "id": "JOIN-PAT", "label": "JOIN-PAT", "level": 15, "shape": "box"}, {"color": "orange", "id": "DELETE", "label": "DELETE", "level": 6, "shape": "box"}, {"color": "orange", "id": "EMPTY", "label": "EMPTY", "level": 6, "shape": "box"}, {"color": "green", "id": "End", "label": "End", "level": 16, "shape": "diamond", "size": 120}]);
+        edges = new vis.DataSet([{"arrows": "to", "color": "orange", "from": "Start", "label": "-", "to": "NEW"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "5.0months,3weeks,6days,1hour,50mins,23secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "1day,18hours,16mins,23secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "4days,20hours,37mins,37secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "1.0month,2days,21hours,9mins,39secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "1.0month,2weeks,6days,18hours,41mins,42secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "3weeks,2days,1hour,44mins,13secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "REOPEN", "label": "2days,20hours,16mins,18secs", "to": "CHANGE DIAGN"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "2.0months,1week,6days,22hours,11mins,51secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "6days,21hours,11mins,28secs", "to": "CHANGE DIAGN"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "3weeks,1hour,33mins,46secs", "to": "CHANGE DIAGN"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "2.0months,3weeks,3days,6hours,34mins,50secs", "to": "STORNO"}, {"arrows": "to", "color": "orange", "from": "STORNO", "label": "2weeks,10hours,41mins,34secs", "to": "REJECT"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "1.0month,5hours,33mins,42secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "2weeks,2days,4hours,27mins,23secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "REOPEN", "label": "1week,2days,17hours,37mins,59secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "2weeks,1day,23hours,38mins,39secs", "to": "CODE NOK"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "5days,5hours,13mins,33secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "STORNO", "label": "1week,23hours,28mins,16secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "1.0month,4weeks,2days,6hours,16mins,46secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "8.0months,3weeks,5days,8hours,51mins,58secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "1.0month,3weeks,2days,9hours,4mins,54secs", "to": "CHANGE END"}, {"arrows": "to", "color": "orange", "from": "CHANGE END", "label": "1day,18hours,30mins,18secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "1.0month,1week,2days,21hours,1min,15secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "2days,22hours,11mins,49secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "1week,5days,6hours,2mins,39secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "1week,5days,6hours,10mins,23secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "REOPEN", "label": "2hours,19mins,12secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "6.0months,1week,5days,8hours,3mins,47secs", "to": "MANUAL"}, {"arrows": "to", "color": "orange", "from": "MANUAL", "label": "51mins,49secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "3days,23hours,38mins,52secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "1.0month,1hour,3mins,24secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "3.0months,1week,16hours,40mins,23secs", "to": "CODE NOK"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "2days,9hours,51mins,28secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "3weeks,6days,22hours,32mins,39secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "4.0months,3weeks,6days,9hours,31mins,51secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "1.0month,10hours,36mins,55secs", "to": "MANUAL"}, {"arrows": "to", "color": "orange", "from": "MANUAL", "label": "4hours,13mins,21secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "4.0months,1week,4days,14hours,18mins,17secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "3days,9hours,7mins,32secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "1.0month,6days,23hours,54mins,54secs", "to": "CHANGE END"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "3.0months,3weeks,2days,1hour,8mins,56secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "0sec", "to": "NEW"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "6.0months,6days,14hours,35mins,52secs", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "JOIN-PAT", "label": "0sec", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "JOIN-PAT", "label": "7.0months,1week,1day,18hours,38mins,19secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "DELETE", "label": "0sec", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "3weeks,5days,19mins,46secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "10.0months,3weeks,1day,11hours,32mins,31secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "DELETE", "label": "7.0months,2weeks,2days,20hours,47mins,56secs", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "4weeks,1day,6hours,28mins,53secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "3weeks,3days,1hour,24mins,20secs", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "JOIN-PAT", "label": "2.0months,3weeks,6days,20hours,24mins,18secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "1day,22hours,53mins,50secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "0sec", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "STORNO", "label": "1day,11hours,54mins,40secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "4weeks,2days,7hours,10mins,37secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "4days,3hours,1min,24secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "MANUAL", "label": "3weeks,1day,16hours,33mins,17secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "10.0months,2weeks,4days,4hours,9mins,30secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "3days,14hours,28mins,37secs", "to": "CODE ERROR"}, {"arrows": "to", "color": "orange", "from": "CODE ERROR", "label": "2weeks,2days,21hours,15mins,10secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "3weeks,6days,18hours,33mins,41secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "CHANGE END", "label": "1min,53secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "3hours,53mins,49secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "9.0months,1week,3days,19hours,12mins,30secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "MANUAL", "label": "1day,9hours,27mins,12secs", "to": "MANUAL"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "2.0months,2weeks,4days,6hours,46secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "SET STATUS", "label": "6hours,50mins,51secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "SET STATUS", "label": "1.0month,3days,17hours,22mins,56secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "STORNO", "label": "0sec", "to": "STORNO"}, {"arrows": "to", "color": "orange", "from": "STORNO", "label": "1week,36mins,53secs", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "JOIN-PAT", "label": "2.0months,2weeks,4days,14hours,25mins,11secs", "to": "REJECT"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "0sec", "to": "REJECT"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "4mins,32secs", "to": "MANUAL"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "1.0month,3weeks,2days,15hours,43mins,29secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "STORNO", "label": "1day,13hours,52mins,4secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "10.0months,1week,3days,5hours,22mins,58secs", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "6.0months,3weeks,4days,9hours,44mins,39secs", "to": "MANUAL"}, {"arrows": "to", "color": "orange", "from": "MANUAL", "label": "3mins,51secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "REOPEN", "label": "4days,11hours,42mins,13secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "3weeks,4days,19hours,6mins,56secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "3weeks,3days,13hours,37mins,38secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "CODE ERROR", "label": "1week,6days,2hours,50mins,39secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "10.0months,3weeks,2days,15hours,12mins,51secs", "to": "CODE NOK"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "2weeks,6days,35mins,11secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "6.0months,3weeks,5days,1hour,22mins,51secs", "to": "STORNO"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "1day,12hours,3mins,1sec", "to": "CODE NOK"}, {"arrows": "to", "color": "orange", "from": "SET STATUS", "label": "16hours,42mins,46secs", "to": "RELEASE"}, {"arrows": "to", "color": "orange", "from": "SET STATUS", "label": "5secs", "to": "REOPEN"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "22secs", "to": "CODE OK"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "8hours,11mins,29secs", "to": "EMPTY"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "1week,4days,22hours,11mins,35secs", "to": "EMPTY"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "4weeks,1day,7hours,24mins,5secs", "to": "JOIN-PAT"}, {"arrows": "to", "color": "orange", "from": "JOIN-PAT", "label": "1.0month,1day,1min,51secs", "to": "BILLED"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "31secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "REOPEN", "label": "20secs", "to": "CODE NOK"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "52secs", "to": "FIN"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "6days,23hours,21mins,50secs", "to": "MANUAL"}, {"arrows": "to", "color": "orange", "from": "EMPTY", "label": "2.0months,2days,4hours,28mins,34secs", "to": "DELETE"}, {"arrows": "to", "color": "orange", "from": "REOPEN", "label": "1min,43secs", "to": "SET STATUS"}, {"arrows": "to", "color": "orange", "from": "BILLED", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "DELETE", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "NEW", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "FIN", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "SET STATUS", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "CODE OK", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "JOIN-PAT", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "RELEASE", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "CODE NOK", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "MANUAL", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "EMPTY", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "REJECT", "label": "-", "to": "End"}, {"arrows": "to", "color": "orange", "from": "CHANGE DIAGN", "label": "-", "to": "End"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "forceAtlas2Based": {
+            "avoidOverlap": 1,
+            "centralGravity": 0,
+            "damping": 1,
+            "gravitationalConstant": -68,
+            "springConstant": 0.03,
+            "springLength": 200
+        },
+        "solver": "forceAtlas2Based",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

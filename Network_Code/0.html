@@ -1,0 +1,129 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-network@latest/styles/vis-network.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vis-network@latest/dist/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Start", "label": "Start", "level": 0, "shape": "box"}, {"id": "NEW", "label": "NEW", "level": 1, "shape": "box"}, {"id": "CHANGE DIAGN", "label": "CHANGE DIAGN", "level": 2, "shape": "box"}, {"id": "FIN", "label": "FIN", "level": 3, "shape": "box"}, {"id": "RELEASE", "label": "RELEASE", "level": 4, "shape": "box"}, {"id": "CODE OK", "label": "CODE OK", "level": 5, "shape": "box"}, {"id": "BILLED", "label": "BILLED", "level": 6, "shape": "box"}, {"id": "End", "label": "End", "level": 6, "shape": "box"}]);
+        edges = new vis.DataSet([{"arrows": "to", "from": "Start", "label": "33673", "to": "NEW"}, {"arrows": "to", "from": "NEW", "label": "33673", "to": "CHANGE DIAGN"}, {"arrows": "to", "from": "CHANGE DIAGN", "label": "33673", "to": "FIN"}, {"arrows": "to", "from": "FIN", "label": "33673", "to": "RELEASE"}, {"arrows": "to", "from": "RELEASE", "label": "33673", "to": "CODE OK"}, {"arrows": "to", "from": "CODE OK", "label": "33673", "to": "BILLED"}, {"arrows": "to", "from": "BILLED", "label": "33673", "to": "End"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "layout": {
+        "hierarchical": {
+            "blockShifting": true,
+            "edgeMinimization": true,
+            "enabled": true,
+            "levelSeparation": 150,
+            "parentCentralization": true,
+            "sortMethod": "hubsize",
+            "treeSpacing": 200
+        },
+        "improvedLayout": true,
+        "randomSeed": 0
+    },
+    "physics": {
+        "enabled": true,
+        "hierarchicalRepulsion": {
+            "centralGravity": 0.0,
+            "damping": 0.09,
+            "nodeDistance": 150,
+            "springConstant": 0,
+            "springLength": 100
+        },
+        "solver": "hierarchicalRepulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
